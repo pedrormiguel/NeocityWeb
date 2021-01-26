@@ -3,7 +3,7 @@
   Version: 0.1.0;
   (◠‿◠✿)
 */
-var Calendar = function(model, options, date){
+var Calendar = function(model, options, date) {
   // Default Values
   this.Options = {
     Color: '',
@@ -19,8 +19,9 @@ var Calendar = function(model, options, date){
     DisabledDays: [],
     ModelChange: model
   };
+
   // Overwriting default values
-  for(var key in options){
+  for(var key in options) {
     this.Options[key] = typeof options[key]=='string'?options[key].toLowerCase():options[key];
   }
 
@@ -43,19 +44,25 @@ var Calendar = function(model, options, date){
   this.Prev.Days = new Date(this.Prev.getFullYear(), (this.Prev.getMonth() + 1), 0).getDate();
 };
 
-function createCalendar(calendar, element, adjuster){
-  if(typeof adjuster !== 'undefined'){
+function createCalendar(calendar, element, adjuster) {
+
+  if(typeof adjuster !== 'undefined') {
+
     var newDate = new Date(calendar.Selected.Year, calendar.Selected.Month + adjuster, 1);
     calendar = new Calendar(calendar.Model, calendar.Options, newDate);
     element.innerHTML = '';
-  }else{
+
+  } else {
+
     for(var key in calendar.Options){
       typeof calendar.Options[key] != 'function' && typeof calendar.Options[key] != 'object' && calendar.Options[key]?element.className += " " + key + "-" + calendar.Options[key]:0;
     }
+
   }
+
   var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-  function AddSidebar(){
+  function AddSidebar() {
     var sidebar = document.createElement('div');
     sidebar.className += 'cld-sidebar';
 
@@ -124,46 +131,62 @@ function createCalendar(calendar, element, adjuster){
   var mainSection = document.createElement('div');
   mainSection.className += "cld-main";
 
-  function AddDateTime(){
+  function AddDateTime() {
       var datetime = document.createElement('div');
       datetime.className += "cld-datetime";
-      if(calendar.Options.NavShow && !calendar.Options.NavVertical){
+
+      if(calendar.Options.NavShow && !calendar.Options.NavVertical) {
+
         var rwd = document.createElement('div');
         rwd.className += " cld-rwd cld-nav";
         rwd.addEventListener('click', function(){createCalendar(calendar, element, -1);} );
         rwd.innerHTML = '<svg height="15" width="15" viewBox="0 0 75 100" fill="rgba(0,0,0,0.5)"><polyline points="0,50 75,0 75,100"></polyline></svg>';
         datetime.appendChild(rwd);
+
       }
+
       var today = document.createElement('div');
+
       today.className += ' today';
+
       today.innerHTML = months[calendar.Selected.Month] + ", " + calendar.Selected.Year;
+
       datetime.appendChild(today);
-      if(calendar.Options.NavShow && !calendar.Options.NavVertical){
+
+      if(calendar.Options.NavShow && !calendar.Options.NavVertical) {
         var fwd = document.createElement('div');
         fwd.className += " cld-fwd cld-nav";
         fwd.addEventListener('click', function(){createCalendar(calendar, element, 1);} );
         fwd.innerHTML = '<svg height="15" width="15" viewBox="0 0 75 100" fill="rgba(0,0,0,0.5)"><polyline points="0,0 75,50 0,100"></polyline></svg>';
         datetime.appendChild(fwd);
       }
-      if(calendar.Options.DatetimeLocation){
+
+      if(calendar.Options.DatetimeLocation) {
         document.getElementById(calendar.Options.DatetimeLocation).innerHTML = "";
         document.getElementById(calendar.Options.DatetimeLocation).appendChild(datetime);
       }
+
       else{mainSection.appendChild(datetime);}
   }
 
-  function AddLabels(){
+  function AddLabels() {
+
     var labels = document.createElement('ul');
+
     labels.className = 'cld-labels';
+
     var labelsList = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    for(var i = 0; i < labelsList.length; i++){
+
+    for(var i = 0; i < labelsList.length; i++) {
       var label = document.createElement('li');
       label.className += "cld-label";
       label.innerHTML = labelsList[i];
       labels.appendChild(label);
     }
+    
     mainSection.appendChild(labels);
   }
+
   function AddDays(){
     // Create Number Element
     function DayNumber(n){
@@ -174,6 +197,7 @@ function createCalendar(calendar, element, adjuster){
     }
     var days = document.createElement('ul');
     days.className += "cld-days";
+
     // Previous Month's Days
     for(var i = 0; i < (calendar.Selected.FirstDay); i++){
       var day = document.createElement('li');
@@ -275,12 +299,14 @@ function createCalendar(calendar, element, adjuster){
     }
     mainSection.appendChild(days);
   }
+
   if(calendar.Options.Color){
     mainSection.innerHTML += '<style>.cld-main{color:' + calendar.Options.Color + ';}</style>';
   }
   if(calendar.Options.LinkColor){
     mainSection.innerHTML += '<style>.cld-title a{color:' + calendar.Options.LinkColor + ';}</style>';
   }
+
   element.appendChild(mainSection);
 
   if(calendar.Options.NavShow && calendar.Options.NavVertical){
@@ -289,11 +315,12 @@ function createCalendar(calendar, element, adjuster){
   if(calendar.Options.DateTimeShow){
     AddDateTime();
   }
-  AddLabels();
-  AddDays();
+
+    AddLabels();
+    AddDays();
 }
 
-function caleandar(el, data, settings){
+function caleandar(el, data, settings) {
   var obj = new Calendar(data, settings);
   createCalendar(obj, el);
 }

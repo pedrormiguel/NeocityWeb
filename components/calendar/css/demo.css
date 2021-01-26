@@ -4,6 +4,9 @@ body{
   color: #333;
 }
 
-.cld-main {
-  width: 90%;
+#box {
+  position: relative;
+  right: .6em;
+  width: 110%;
 }
+
